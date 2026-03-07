@@ -1,0 +1,11 @@
+{
+  "domain": "myair3",
+  "name": "myAir 3 / iZS10.3",
+  "codeowners": [],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/",
+  "iot_class": "local_polling",
+  "requirements": [],
+  "version": "1.0.0"
+}

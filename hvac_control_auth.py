@@ -66,10 +66,10 @@ def authenticate(ip: str, password: str = DEFAULT_PASSWORD) -> bool:
             
         return auth_element.text == "1"
         
-    except urllib.error.URLError as e:
-        raise RuntimeError(f"Failed to connect to HVAC system at {ip}: {e.reason}")
     except urllib.error.HTTPError as e:
         raise RuntimeError(f"HVAC system returned HTTP error {e.code} during authentication")
+    except urllib.error.URLError as e:
+        raise RuntimeError(f"Failed to connect to HVAC system at {ip}: {e.reason}")
     except ElementTree.ParseError as e:
         raise RuntimeError(f"Invalid XML response from HVAC system: {e}")
 
@@ -352,9 +352,9 @@ def get_status(ip: str, password: str = DEFAULT_PASSWORD) -> dict:
         
         # Extract airconOnOff
         aircon_element = root.find('.//unitcontrol/airconOnOff')
-        if aircon_element is None:
+        if aircon_element is None or aircon_element.text is None:
             # Let's see what the response actually was to help debug
-            raise RuntimeError(f"Could not find 'airconOnOff' element in response. Raw XML: {xml_content[:500]}")
+            raise RuntimeError(f"Could not find valid 'airconOnOff' element in response. Raw XML: {xml_content[:500]}")
             
         status_value = aircon_element.text.strip()
         state = "ON" if status_value == "1" else "OFF"
@@ -363,18 +363,18 @@ def get_status(ip: str, password: str = DEFAULT_PASSWORD) -> dict:
              
         # Extract central temperatures
         central_actual = root.find('.//unitcontrol/centralActualTemp')
-        actual_temp = central_actual.text.strip() if central_actual is not None else "N/A"
+        actual_temp = central_actual.text.strip() if central_actual is not None and central_actual.text is not None else "N/A"
         
         central_desired = root.find('.//unitcontrol/centralDesiredTemp')
-        desired_temp = central_desired.text.strip() if central_desired is not None else "N/A"
+        desired_temp = central_desired.text.strip() if central_desired is not None and central_desired.text is not None else "N/A"
         
         # Extract fan speed
         fan_element = root.find('.//unitcontrol/fanSpeed')
-        fan_speed = fan_element.text.strip() if fan_element is not None else "unknown"
+        fan_speed = fan_element.text.strip() if fan_element is not None and fan_element.text is not None else "unknown"
         
         # Extract mode
         mode_element = root.find('.//unitcontrol/mode')
-        mode = mode_element.text.strip() if mode_element is not None else "unknown"
+        mode = mode_element.text.strip() if mode_element is not None and mode_element.text is not None else "unknown"
         
         return {
             "state": state,
@@ -428,11 +428,11 @@ def get_zone_data(zone_number: int, ip: str, password: str = DEFAULT_PASSWORD) -
         
         # Extract name
         name_elem = zone_element.find('name')
-        result['name'] = name_elem.text.strip() if name_elem is not None else f'Zone {zone_number}'
+        result['name'] = name_elem.text.strip() if name_elem is not None and name_elem.text is not None else f'Zone {zone_number}'
         
         # Extract setting (0=off, 1=on)
         setting_elem = zone_element.find('setting')
-        result['setting'] = setting_elem.text.strip() if setting_elem is not None else '0'
+        result['setting'] = setting_elem.text.strip() if setting_elem is not None and setting_elem.text is not None else '0'
         
         # Extract actualTemp (may be empty for zones without temp sensors)
         actual_temp_elem = zone_element.find('actualTemp')
@@ -440,11 +440,11 @@ def get_zone_data(zone_number: int, ip: str, password: str = DEFAULT_PASSWORD) -
         
         # Extract desiredTemp
         desired_temp_elem = zone_element.find('desiredTemp')
-        result['desiredTemp'] = desired_temp_elem.text.strip() if desired_temp_elem is not None else ''
+        result['desiredTemp'] = desired_temp_elem.text.strip() if desired_temp_elem is not None and desired_temp_elem.text is not None else ''
         
         # Extract userPercentSetting (damper percentage)
         damper_elem = zone_element.find('userPercentSetting')
-        result['userPercentSetting'] = damper_elem.text.strip() if damper_elem is not None else '0'
+        result['userPercentSetting'] = damper_elem.text.strip() if damper_elem is not None and damper_elem.text is not None else '0'
         
         return result
             
