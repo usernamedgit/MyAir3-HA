@@ -1,0 +1,167 @@
+http://192.168.1.201/login?password=password
+http://192.168.1.201/getSystemData
+http://192.168.1.201/getZoneData?zone=4
+http://192.168.1.201/getZoneData?zone=3
+http://192.168.1.201/getZoneData?zone=2
+http://192.168.1.201/getZoneData?zone=1
+http://192.168.1.201/getZoneData?zone=5
+http://192.168.1.201/getZoneData?zone=6
+http://192.168.1.201/setClock?hours=21&minutes=8&day=5&month=1&year=2019&dow=6
+http://192.168.1.201/setSystemData?airconOnOff=1
+http://192.168.1.201/setZoneData?zone=4&zoneSetting=0
+http://192.168.1.201/setZoneData?zone=4&zoneSetting=1
+http://192.168.1.201/setZoneData?zone=4&desiredTemp=23.0&zoneSetting=1
+http://192.168.1.201/setZoneData?zone=4&desiredTemp=24.0&zoneSetting=1
+http://192.168.1.201/setSystemData?mode=2
+http://192.168.1.201/setSystemData?mode=3
+http://192.168.1.201/setSystemData?mode=1
+http://192.168.1.201/setSystemData?fanSpeed=2
+http://192.168.1.201/setSystemData?fanSpeed=3
+http://192.168.1.201/setSystemData?fanSpeed=1
+http://192.168.1.201/setSystemData?unitControlTempsSetting=3
+http://192.168.1.201/setSystemData?unitControlTempsSetting=4
+GET http://192.168.1.201/getZoneTimer
+
+#Fan Mode 1,2,3 (low,med,high)
+#mode 1, 2, 3 (cooling, heating, fan only)
+
+#Commands to set Timers:
+
+http://192.168.1.201/getZoneTimer
+http://192.168.1.201/setZoneTimer?scheduleStatus=0  #Timer off
+http://192.168.1.201/setZoneTimer?startTimeHours=4&startTimeMinutes=0&endTimeHours=5&endTimeMinutes=30&scheduleStatus=1 #Start AC time only
+http://192.168.1.201/setZoneTimer?startTimeHours=4&startTimeMinutes=0&endTimeHours=5&endTimeMinutes=30&scheduleStatus=2 #Stop AC time only
+http://192.168.1.201/setZoneTimer?startTimeHours=4&startTimeMinutes=0&endTimeHours=5&endTimeMinutes=30&scheduleStatus=3 #Start and stop timer
+http://192.168.1.201/setZoneTimer?scheduleStatus=0 =#Off
+
+Schedule/Programs
+
+GET http://192.168.1.201/setScheduleData?schedule=1&day=4&startHours=5&startMinutes=0&endHours=7&endMinutes=0&scheduleStatus=1&zones=000100&zoneStatus=0&name=TEST ==========Make schedule: thurs 0500-0700 master zone on
+GET http://192.168.1.201/setScheduleData?schedule=1&day=46&startHours=5&startMinutes=0&endHours=7&endMinutes=0&scheduleStatus=1&zones=001100&zoneStatus=0&name=TEST ==========Make sched: Thurs&Sat 0500-0700 master&study on
+GET http://192.168.1.201/getScheduleData?schedule=1 ======Returns xml of schedule setting to display in app. schedule=1<->5 ie 5 schedules
+
+Set clock:
+GET http://192.168.1.201/setClock?hours=21&minutes=22&day=5&month=1&year=2019&dow=6
+
+Authenticate:
+GET http://192.168.1.201/login?password=password
+
+
+Example Get System Data response (XML)
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<iZS10.3>
+  <request>getSystemData</request>
+  <mac>001ec0a3b90f</mac>
+  <authenticated>1</authenticated>
+  <system>
+    <type>12</type>
+    <name>MYAIR3</name>
+    <MyAppRev>7.4</MyAppRev>
+    <zoneStationHasUnitControl>1</zoneStationHasUnitControl>
+    <dhcp>1</dhcp>
+    <ip>192.168.1.201</ip>
+    <netmask>255.255.255.0</netmask>
+    <gateway>192.168.1.1</gateway>
+    <unitcontrol>
+      <airconOnOff>0</airconOnOff>
+      <fanSpeed>1</fanSpeed>
+      <mode>1</mode>
+      <unitControlTempsSetting>4</unitControlTempsSetting>
+      <centralActualTemp>29.8</centralActualTemp>
+      <centralDesiredTemp>23.0</centralDesiredTemp>
+      <airConErrorCode></airConErrorCode>
+      <activationCodeStatus>0</activationCodeStatus>
+      <numberOfZones>6</numberOfZones>
+      <maxUserTemp>32.0</maxUserTemp>
+      <minUserTemp>16.0</minUserTemp>
+      <availableSchedules>8</availableSchedules>
+    </unitcontrol>
+    <zs103TechSettings>
+      <numberofConstantZones>1</numberofConstantZones>
+      <zsConstantZone1>2</zsConstantZone1>
+      <zsConstantZone2>0</zsConstantZone2>
+      <zsConstantZone3>0</zsConstantZone3>
+      <tempSensorSelect>0</tempSensorSelect>
+      <returnAirOffset>0.0</returnAirOffset>
+      <controlZoneNumber>0</controlZoneNumber>
+      <newAirFitted>0</newAirFitted>
+      <ACinfo>1</ACinfo>
+      <systemID>12</systemID>
+    </zs103TechSettings>
+  </system>
+</iZS10.3>
+
+
+Get Zone Data Response (XML)
+<?xml version="1.0" encoding="UTF-8" ?>
+<iZS10.3>
+  <request>getZoneData</request>
+  <mac>001ec0a3b90f</mac>
+  <authenticated>1</authenticated>
+  <zone1>
+    <name>KIT + FAMILY</name>
+    <setting>0</setting>
+    <userPercentSetting>100</userPercentSetting>
+    <maxDamper>100</maxDamper>
+    <minDamper>0</minDamper>
+    <userPercentAvail>0</userPercentAvail>
+    <actualTemp>28.7</actualTemp>
+    <desiredTemp>23.0</desiredTemp>
+    <RFstrength>55</RFstrength>
+    <hasLowBatt>0</hasLowBatt>
+    <hasMotorError>0</hasMotorError>
+    <hasClimateControl>1</hasClimateControl>
+  </zone1>
+</iZS10.3>
+
+Get Schedule Date Response (XML)
+
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<iZS10.3>
+  <request>getScheduleData</request>
+  <mac>001ec0a3b90f</mac>
+  <authenticated>1</authenticated>
+  <schedule4>
+    <name>PROGRAM4</name>
+    <weekDays>
+      <Monday>0</Monday>
+      <Tuesday>0</Tuesday>
+      <Wednesday>0</Wednesday>
+      <Thursday>0</Thursday>
+      <Friday>0</Friday>
+      <Saturday>0</Saturday>
+      <Sunday>0</Sunday>
+    </weekDays>
+    <startTimeHours>0</startTimeHours>
+    <startTimeMinutes>0</startTimeMinutes>
+    <endTimeHours>0</endTimeHours>
+    <endTimeMinutes>0</endTimeMinutes>
+    <scheduleStatus>0</scheduleStatus>
+    <zoneStatus>
+      <zone1>0</zone1>
+      <zone2>0</zone2>
+      <zone3>0</zone3>
+      <zone4>0</zone4>
+      <zone5>0</zone5>
+      <zone6>0</zone6>
+    </zoneStatus>
+  </schedule4>
+</iZS10.3>
+
+Get Zone Timer Response:
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<iZS10.3>
+  <request>getZoneTimer</request>
+  <mac>001ec0a3b90f</mac>
+  <authenticated>1</authenticated>
+  <zoneTimer>
+    <startTimeHours>4</startTimeHours>
+    <startTimeMinutes>0</startTimeMinutes>
+    <endTimeHours>9</endTimeHours>
+    <endTimeMinutes>30</endTimeMinutes>
+    <scheduleStatus>0</scheduleStatus>
+  </zoneTimer>
+</iZS10.3>
