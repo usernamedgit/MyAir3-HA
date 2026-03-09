@@ -28,6 +28,7 @@ class MyAir3SystemClimate(CoordinatorEntity, ClimateEntity):
     _attr_has_entity_name = True
     _attr_name = "Central System"
     _attr_temperature_unit = UnitOfTemperature.CELSIUS
+    _attr_target_temperature_step = 1.0
     _attr_hvac_modes = [HVACMode.OFF, HVACMode.COOL, HVACMode.HEAT, HVACMode.FAN_ONLY]
     _attr_fan_modes = ["low", "med", "high"]
     _attr_supported_features = (
@@ -95,7 +96,7 @@ class MyAir3SystemClimate(CoordinatorEntity, ClimateEntity):
 class MyAir3ZoneClimate(CoordinatorEntity, ClimateEntity):
     _attr_has_entity_name = True
     _attr_temperature_unit = UnitOfTemperature.CELSIUS
-    _attr_hvac_modes = [HVACMode.OFF, HVACMode.AUTO]
+    _attr_target_temperature_step = 1.0
     _attr_supported_features = ClimateEntityFeature.TARGET_TEMPERATURE
 
     def __init__(self, coordinator, client, zone_id):
@@ -117,9 +118,24 @@ class MyAir3ZoneClimate(CoordinatorEntity, ClimateEntity):
         return self.coordinator.data["zones"][self.zone_id]["desiredTemp"]
 
     @property
+    def hvac_modes(self):
+        return [HVACMode.OFF, HVACMode.COOL, HVACMode.HEAT, HVACMode.FAN_ONLY, HVACMode.AUTO]
+
+    @property
     def hvac_mode(self):
         setting = self.coordinator.data["zones"][self.zone_id]["setting"]
-        return HVACMode.AUTO if setting == "1" else HVACMode.OFF
+        if setting == "0":
+            return HVACMode.OFF
+            
+        main_state = self.coordinator.data["system"]["state"]
+        if main_state == "OFF":
+            return HVACMode.FAN_ONLY
+            
+        mode = self.coordinator.data["system"]["mode"]
+        if mode == "1": return HVACMode.COOL
+        elif mode == "2": return HVACMode.HEAT
+        elif mode == "3": return HVACMode.FAN_ONLY
+        return HVACMode.AUTO
 
     async def async_set_temperature(self, **kwargs):
         temp = kwargs.get(ATTR_TEMPERATURE)
@@ -128,6 +144,6 @@ class MyAir3ZoneClimate(CoordinatorEntity, ClimateEntity):
             await self.coordinator.async_request_refresh()
 
     async def async_set_hvac_mode(self, hvac_mode: HVACMode):
-        val = "1" if hvac_mode == HVACMode.AUTO else "0"
+        val = "0" if hvac_mode == HVACMode.OFF else "1"
         await self.client.set_zone_data(self.zone_id, "zoneSetting", val)
         await self.coordinator.async_request_refresh()
