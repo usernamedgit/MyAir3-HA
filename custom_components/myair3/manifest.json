@@ -1,0 +1,13 @@
+{
+  "domain": "myair3",
+  "name": "myAir 3 / iZS10.3",
+  "codeowners": ["@usernamedgit"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/usernamedgit/MyAir3-Python",
+  "integration_type": "device",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/usernamedgit/MyAir3-Python/issues",
+  "requirements": [],
+  "version": "1.1.0"
+}

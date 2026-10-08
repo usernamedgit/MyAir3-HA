@@ -6,9 +6,9 @@ This script provides command-line control of a myAir HVAC system,
 allowing users to turn the AC on/off and check its status.
 
 Usage:
-    python hvac_control.py --ip 192.168.1.209 --on      # Turn AC on
-    python hvac_control.py --ip 192.168.1.209 --off     # Turn AC off
-    python hvac_control.py --ip 192.168.1.209 --status  # Check current status
+    python hvac_control.py --ip 192.168.1.100 --on      # Turn AC on
+    python hvac_control.py --ip 192.168.1.100 --off     # Turn AC off
+    python hvac_control.py --ip 192.168.1.100 --status  # Check current status
 
 The HVAC system requires authentication before any control commands can be sent.
 """
@@ -317,16 +317,16 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-    python hvac_control.py --ip 192.168.1.201 --on      # Turn AC on
-    python hvac_control.py --ip 192.168.1.201 --off     # Turn AC off
-    python hvac_control.py --ip 192.168.1.201 --status  # Check current status
+    python hvac_control.py --ip 192.168.1.100 --on      # Turn AC on
+    python hvac_control.py --ip 192.168.1.100 --off     # Turn AC off
+    python hvac_control.py --ip 192.168.1.100 --status  # Check current status
         """
     )
     
     parser.add_argument(
         '--ip', '-i',
-        default='192.168.1.209',
-        help='IP address of the HVAC system (default: 192.168.1.209)'
+        default='192.168.1.100',
+        help='IP address of the HVAC system (default: 192.168.1.100)'
     )
     
     action_group = parser.add_mutually_exclusive_group(required=True)

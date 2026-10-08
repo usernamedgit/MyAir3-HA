@@ -1,0 +1,26 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up myAir 3 system",
+        "description": "Enter the IP address and password for your myAir 3 / iZS10.3 system.",
+        "data": {
+          "ip_address": "IP Address",
+          "password": "Password"
+        },
+        "data_description": {
+          "ip_address": "The controller's address on your network, e.g. 192.168.1.100.",
+          "password": "The controller password (factory default is \"password\")."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the HVAC system.",
+      "invalid_auth": "Invalid authentication. Please check your password.",
+      "unknown": "Unexpected error occurred."
+    },
+    "abort": {
+      "already_configured": "This controller is already configured. If its IP address changed, the existing entry has been updated."
+    }
+  }
+}
