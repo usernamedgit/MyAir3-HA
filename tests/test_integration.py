@@ -128,8 +128,11 @@ async def test_diagnostics(hass, setup, controller):
 
 
 async def test_temperature_sensors(hass, setup, controller):
-    central = hass.states.get("sensor.myair3_temperature")
+    central = hass.states.get("sensor.myair3_controller_temperature")
     assert central.state == "29.8"
+    assert central.attributes["friendly_name"] == "MYAIR3 Controller temperature"
+    # Renaming kept the unique ID, so existing installs keep their entity ID and history.
+    assert er.async_get(hass).async_get(central.entity_id).unique_id == f"{MAC}_temperature"
     assert central.attributes["device_class"] == "temperature"
     assert central.attributes["state_class"] == "measurement"
     assert central.attributes["unit_of_measurement"] == "°C"

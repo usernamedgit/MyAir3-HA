@@ -36,9 +36,9 @@ class _MyAir3TemperatureSensor(SensorEntity):
 
 
 class MyAir3CentralTemperature(MyAir3Entity, _MyAir3TemperatureSensor):
-    """Temperature measured at the central unit's sensor."""
+    """Temperature read by the wall-mounted control panel, not by any zone sensor."""
 
-    _attr_name = "Temperature"
+    _attr_name = "Controller temperature"
 
     def __init__(self, coordinator: MyAir3Coordinator):
         super().__init__(coordinator, "temperature")
