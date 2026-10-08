@@ -11,7 +11,7 @@ from pytest_homeassistant_custom_component.test_util.aiohttp import (
 
 from custom_components.myair3.const import CONF_IP, CONF_PASSWORD, DOMAIN
 
-MAC = "001ec0a3b90f"
+MAC = "001ec0123456"
 IP = "192.168.1.209"
 
 
