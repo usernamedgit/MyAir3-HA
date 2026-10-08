@@ -13,7 +13,7 @@ Usage:
     python hvac_control_auth.py --fan high             # Set fan speed (low, med, high)
     python hvac_control_auth.py --zone                 # Open interactive zone control
     python hvac_control_auth.py --status               # Check current status
-    python hvac_control_auth.py --ip 192.168.1.X ...   # Specify a custom IP (default: 192.168.1.209)
+    python hvac_control_auth.py --ip 192.168.1.X ...   # Specify a custom IP (default: 192.168.1.100)
 
 The script uses lazy authentication, only sending login requests
 when the HVAC system indicates the session has expired.
@@ -626,8 +626,8 @@ Examples:
     
     parser.add_argument(
         '--ip', '-i',
-        default='192.168.1.209',
-        help='IP address of the HVAC system (default: 192.168.1.209)'
+        default='192.168.1.100',
+        help='IP address of the HVAC system (default: 192.168.1.100)'
     )
     
     action_group = parser.add_mutually_exclusive_group(required=True)
