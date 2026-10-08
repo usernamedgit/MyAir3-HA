@@ -12,6 +12,7 @@ A Home Assistant integration for the myAir 3 zoned air-conditioning controller. 
 - **The air conditioner**: a thermostat with off / cool / heat / fan only, fan speed (low, medium, high) and the central setpoint.
 - **Zones with a temperature sensor**: a thermostat per zone. A zone has no mode of its own, so it offers just off and whatever mode the central unit is in, and shows idle when the unit is off.
 - **Zones without a sensor**: an on/off switch and a damper slider (%).
+- **Temperature sensors**: the central temperature and each sensored zone's temperature as separate sensors, so Home Assistant keeps long-term history you can graph and use in automations.
 - **Diagnostics**: aircon fault (with error code), damper motor fault per zone, and battery and signal for each zone sensor.
 
 ## Install with HACS
@@ -22,6 +23,8 @@ A Home Assistant integration for the myAir 3 zoned air-conditioning controller. 
 4. Go to **Settings → Devices & services → Add integration → myAir 3**, then enter the controller's IP address and password (the factory default is `password`).
 
 Updates appear in HACS like any other integration.
+
+If the controller's IP address or password changes, open the integration in **Settings → Devices & services**, choose **⋮ → Reconfigure** and enter the new details. If the password changes, Home Assistant also prompts you to re-enter it.
 
 ## Manual install
 
