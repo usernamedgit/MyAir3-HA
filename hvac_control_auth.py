@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HVAC Control Script for myAir/iZS10.3 System
+HVAC Control Script for myAir 3 System
 
 This script provides command-line control of a myAir HVAC system,
 allowing users to turn the AC on/off, change modes, set fan speed,
@@ -610,7 +610,7 @@ def main():
     """Main entry point for the HVAC control script."""
     
     parser = argparse.ArgumentParser(
-        description="Control myAir/iZS10.3 HVAC system",
+        description="Control myAir 3 HVAC system",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:

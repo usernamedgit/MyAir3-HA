@@ -1,9 +1,9 @@
-# Home Assistant Integration Plan: myAir / iZS10.3
+# Home Assistant Integration Plan: myAir 3
 
 ## 1. Project Structure
 The integration will be a Home Assistant Custom Component, structured as follows:
 ```text
-custom_components/myair_izs103/
+custom_components/myair3/
 ├── __init__.py           # Setup and initialization, coordinator setup
 ├── manifest.json         # Integration metadata (domain, version, dependencies)
 ├── config_flow.py        # UI configuration flow (IP, Password input)

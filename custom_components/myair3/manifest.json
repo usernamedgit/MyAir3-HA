@@ -1,6 +1,6 @@
 {
   "domain": "myair3",
-  "name": "myAir 3 / iZS10.3",
+  "name": "myAir 3",
   "codeowners": ["@usernamedgit"],
   "config_flow": true,
   "dependencies": [],

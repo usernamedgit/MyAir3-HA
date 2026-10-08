@@ -48,7 +48,7 @@ class MyAir3Entity(CoordinatorEntity[MyAir3Coordinator]):
             identifiers={(DOMAIN, mac)},
             connections={(CONNECTION_NETWORK_MAC, format_mac(mac))},
             manufacturer=MANUFACTURER,
-            model="MyAir3 (iZS10.3)",
+            model="MyAir3",
             name=system["name"],
             sw_version=system["firmware"],
             configuration_url=f"http://{coordinator.client.ip}",
