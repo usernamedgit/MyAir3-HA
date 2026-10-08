@@ -127,6 +127,21 @@ async def test_diagnostics(hass, setup, controller):
     assert fault.state == "on" and fault.attributes["error_code"] == "E3"
 
 
+async def test_temperature_sensors(hass, setup, controller):
+    central = hass.states.get("sensor.myair3_temperature")
+    assert central.state == "29.8"
+    assert central.attributes["device_class"] == "temperature"
+    assert central.attributes["state_class"] == "measurement"
+    assert central.attributes["unit_of_measurement"] == "°C"
+    assert hass.states.get("sensor.myair3_kit_family_temperature").state == "28.7"
+    # A sensored zone that reports no reading is unknown; damper zones get no sensor.
+    assert hass.states.get("sensor.myair3_master_temperature").state == "unknown"
+    assert hass.states.get("sensor.myair3_hall_temperature") is None
+    controller.zones[1]["actualTemp"] = "25.1"
+    await _poll(hass)
+    assert hass.states.get("sensor.myair3_kit_family_temperature").state == "25.1"
+
+
 async def test_failed_zone_poll_marks_only_that_zone_unavailable(hass, setup, controller):
     controller.failing_zones = {1}
     await _poll(hass)

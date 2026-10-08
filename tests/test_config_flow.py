@@ -1,5 +1,10 @@
+from datetime import timedelta
+
 from homeassistant import config_entries
+from homeassistant.config_entries import ConfigEntryState
 from homeassistant.data_entry_flow import FlowResultType
+from homeassistant.util import dt as dt_util
+from pytest_homeassistant_custom_component.common import async_fire_time_changed
 
 from custom_components.myair3.const import CONF_IP, CONF_PASSWORD, DOMAIN
 
@@ -40,3 +45,48 @@ async def test_same_controller_twice_updates_ip(hass, controller, entry):
     assert result["type"] is FlowResultType.ABORT
     assert result["reason"] == "already_configured"
     assert entry.data[CONF_IP] == "192.168.1.250"
+
+
+async def test_reconfigure_changes_ip_and_password(hass, controller, setup):
+    controller.password = "newpass"
+    result = await setup.start_reconfigure_flow(hass)
+    assert result["step_id"] == "reconfigure"
+    result = await hass.config_entries.flow.async_configure(
+        result["flow_id"], {CONF_IP: "192.168.1.250", CONF_PASSWORD: "wrong"}
+    )
+    assert result["errors"] == {"base": "invalid_auth"}
+    result = await hass.config_entries.flow.async_configure(
+        result["flow_id"], {CONF_IP: "192.168.1.250", CONF_PASSWORD: "newpass"}
+    )
+    assert result["type"] is FlowResultType.ABORT
+    assert result["reason"] == "reconfigure_successful"
+    assert setup.data == {CONF_IP: "192.168.1.250", CONF_PASSWORD: "newpass"}
+
+
+async def test_reconfigure_rejects_a_different_controller(hass, controller, setup):
+    controller.mac = "001ec0999999"
+    result = await setup.start_reconfigure_flow(hass)
+    result = await hass.config_entries.flow.async_configure(
+        result["flow_id"], {CONF_IP: "192.168.1.250", CONF_PASSWORD: "password"}
+    )
+    assert result["type"] is FlowResultType.ABORT
+    assert result["reason"] == "wrong_device"
+    assert setup.data[CONF_IP] == IP
+
+
+async def test_rejected_password_starts_reauth(hass, controller, setup):
+    controller.password = "newpass"
+    controller.authenticated = False
+    async_fire_time_changed(hass, dt_util.utcnow() + timedelta(seconds=31))
+    await hass.async_block_till_done()
+
+    flows = hass.config_entries.flow.async_progress_by_handler(DOMAIN)
+    assert [f["context"]["source"] for f in flows] == [config_entries.SOURCE_REAUTH]
+    result = await hass.config_entries.flow.async_configure(
+        flows[0]["flow_id"], {CONF_PASSWORD: "newpass"}
+    )
+    assert result["type"] is FlowResultType.ABORT
+    assert result["reason"] == "reauth_successful"
+    assert setup.data[CONF_PASSWORD] == "newpass"
+    await hass.async_block_till_done()
+    assert setup.state is ConfigEntryState.LOADED

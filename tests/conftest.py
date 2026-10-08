@@ -22,6 +22,7 @@ def auto_enable_custom_integrations(enable_custom_integrations):
 
 class FakeController:
     def __init__(self):
+        self.mac = MAC
         self.password = "password"
         self.authenticated = True
         self.reject_login = False
@@ -53,7 +54,7 @@ class FakeController:
     def _xml(self, request: str, body: str) -> str:
         return (
             '<?xml version="1.0" encoding="UTF-8" ?><iZS10.3>'
-            f"<request>{request}</request><mac>{MAC}</mac>"
+            f"<request>{request}</request><mac>{self.mac}</mac>"
             f"<authenticated>{int(self.authenticated)}</authenticated>{body}</iZS10.3>"
         )
 

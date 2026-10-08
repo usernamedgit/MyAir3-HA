@@ -3,9 +3,10 @@ from datetime import timedelta
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .api import MyAir3Client, MyAir3Error
+from .api import MyAir3AuthError, MyAir3Client, MyAir3Error
 from .const import DOMAIN, UPDATE_INTERVAL_SECONDS
 
 _LOGGER = logging.getLogger(__name__)
@@ -32,6 +33,9 @@ class MyAir3Coordinator(DataUpdateCoordinator[dict]):
     async def _async_update_data(self) -> dict:
         try:
             system = await self.client.get_system_data()
+        except MyAir3AuthError as e:
+            # The password was rejected: ask the user for a new one instead of retrying forever.
+            raise ConfigEntryAuthFailed(f"The HVAC system rejected the password: {e}") from e
         except MyAir3Error as e:
             raise UpdateFailed(f"Error communicating with HVAC system: {e}") from e
 
