@@ -5,7 +5,7 @@
 
 # myAir 3 for Home Assistant
 
-A Home Assistant integration for the myAir 3 (iZS10.3) zoned air-conditioning controller. It talks to the controller over your local network and polls it every 30 seconds.
+A Home Assistant integration for the myAir 3 zoned air-conditioning controller. It talks to the controller over your local network and polls it every 30 seconds.
 
 ## What you get
 
@@ -18,7 +18,7 @@ A Home Assistant integration for the myAir 3 (iZS10.3) zoned air-conditioning co
 
 1. In HACS, open the menu (⋮) → **Custom repositories**.
 2. Add `https://github.com/usernamedgit/MyAir3-HA` with type **Integration**.
-3. Find **myAir 3 / iZS10.3** in HACS, download it, and restart Home Assistant.
+3. Find **myAir 3** in HACS, download it, and restart Home Assistant.
 4. Go to **Settings → Devices & services → Add integration → myAir 3**, then enter the controller's IP address and password (the factory default is `password`).
 
 Updates appear in HACS like any other integration.
