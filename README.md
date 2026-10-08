@@ -3,7 +3,7 @@
 > [!WARNING]
 > **This integration was 100% vibe coded.** It was written entirely by an AI, and the repo owner has no idea what the code is doing. It has not been reviewed by a human who understands it. It controls real heating and cooling equipment. Use it at your own risk.
 
-# myAir 3 / iZS10.3 for Home Assistant
+# myAir 3 for Home Assistant
 
 A Home Assistant integration for the myAir 3 (iZS10.3) zoned air-conditioning controller. It talks to the controller over your local network and polls it every 30 seconds.
 
